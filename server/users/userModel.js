@@ -25,7 +25,7 @@ var UserSchema = new mongoose.Schema({
   },
   streamsObjects: [{ 
     type: mongoose.Schema.Types.ObjectId, 
-    ref: 'Photo' 
+    ref: 'Photos' 
   }],
   friends: [{ 
     type: mongoose.Schema.Types.ObjectId, 

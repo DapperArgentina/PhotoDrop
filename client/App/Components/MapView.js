@@ -50,10 +50,16 @@ class Map extends React.Component {
           this.setState({ photos: photosArr });
         });
 
-        api.fetchUserStreams(this.state.currentUser, function(streamedPhotos) {
-          //this does something with the 
+        api.fetchUserStreamsObjects(this.state.currentUser, (streamedPhotos) => {
           var photoStream = JSON.parse(streamedPhotos);
-          this.setState({ currentUserStream: photoStream });
+          var photoCoords = []
+          photoStream.forEach((photo) => {
+            photoCoords.push(photo.latLng);
+          });
+          console.log('photo coordinates before setState', photoCoords);
+          this.setState({ currentUserStream: photoCoords});
+          console.log('state with photoCoordinates', this.state.currentUserStream);
+
         });
       }
     }, 2000);
@@ -124,6 +130,8 @@ class Map extends React.Component {
             rotateEnabled={false}
             maxDelta={0.003}
           >
+
+            <MapView.Polyline coordinates={this.state.currentUserStream} strokeWidth={2} strokeColor='#1D2B35' lineDashPattern={[3,3]} />
           
             <MapView.Marker coordinate={this.state}>
               <CircleMarker navigator={this.props.navigator}/>
@@ -145,15 +153,7 @@ class Map extends React.Component {
                 </MapView.Marker>
               );
             })}
-
-            { 
-            // var polyLineCoordinates = [];
-            //   this.state.currentUserStream.forEach((photo) => {
-            //     polyLineCoordinates.push({latitude: photo.loc.coordinates[1], longitude: photo.loc.coordinates[0]});
-            //   }
-            //   <MapView.Polyline coordinates={polyLineCoordinates} />
-            // )
-            }
+            
           </MapView>
 
           <TouchableHighlight onPress={this.onLocationPressed.bind(this)} style={styles.arrowButton} underlayColor={'#FF5A5F'}>

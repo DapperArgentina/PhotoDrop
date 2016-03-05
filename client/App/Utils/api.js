@@ -120,9 +120,23 @@ var api = {
     });
   },
 
-  //fetchUserStreams function ******
   fetchUserStreams(userId, callback) {
     var url = 'http://' + config.url + ':8000/fetchUserStreams?userId=' + userId;
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(function(photos) {
+      callback(photos._bodyInit);
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
+  },
+
+  fetchUserStreamsObjects(userId, callback) {
+    var url = 'http://' + config.url + ':8000/fetchUserStreamsObjects?userId=' + userId;
     return fetch(url, {
       method: 'GET',
       headers: {
